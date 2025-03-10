@@ -1,0 +1,20 @@
+const { ActivityHandler, MessageFactory } = require("botbuilder");
+const axios = require("axios");
+
+class TeamsBot extends ActivityHandler {
+  constructor() {
+    super();
+    this.onMessage(async (context, next) => {
+      const userMessage = context.activity.text;
+
+      // Make API call
+      const apiResponse = await axios.get(`https://api.example.com/data?query=${userMessage}`);
+
+      await context.sendActivity(MessageFactory.text(`API Response: ${apiResponse.data.result}`));
+
+      await next();
+    });
+  }
+}
+
+module.exports.TeamsBot = TeamsBot;
